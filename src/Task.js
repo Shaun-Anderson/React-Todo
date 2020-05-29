@@ -35,7 +35,7 @@ function Task ({id, description, completed, updateTask, completeTask, deleteTask
 
                 </div>
                 <div className="col-1">
-                                <button className="btn btn-sm btn-white" onClick={deleteThis}><span className="fe fe-x"></span></button>
+                                <button className="btn btn-sm text-muted" onClick={deleteThis}><span className="fe fe-x"></span></button>
 
                 </div>
 
