@@ -79,8 +79,8 @@ function TodoCard ({initalTasks}) {
                 <Task key={task.id} updateTask={UpdateTask} completeTask={CompleteTask} deleteTask={DeleteTask} {...task}/>
             ))}
             </Box>
-            <Box>
-                <Text fontSize="xs" color="gray.500">(xs) In love with React & Next</Text>
+            <Box mt={3}>
+                <Text fontSize="xs" color="gray.500">Total tasks: {tasks.length}</Text>
             </Box>
         </Box>
     );
