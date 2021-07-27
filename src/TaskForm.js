@@ -1,49 +1,60 @@
 import React, { useState } from 'react';
-import { Input, InputGroup, InputLeftElement, InputRightElement, Button, Box } from "@chakra-ui/react"
+import { Input, InputGroup, InputLeftElement, InputRightElement, Button, Box, FormErrorMessage, FormControl } from "@chakra-ui/react"
 import { PhoneIcon, SmallAddIcon, WarningIcon } from '@chakra-ui/icons'
 import { useToast } from "@chakra-ui/react"
+import { useForm } from "react-hook-form";
 
 function TaskForm ({description, add }) {
-    const [value, setValue] = useState("");
     const toast = useToast()
+    const {
+        handleSubmit,
+        register,
+        setValue,
+        formState: { errors, isSubmitting }
+      } = useForm();
 
     const clear = () => {
-        setValue('')
+        setValue('name', '')
     }
 
+    function onSubmit(values) {
+        add(values.name);
+        setValue('name', '')
+        toast({
+            title: `Added task`,
+            status: "success",
+            position: "top-right",
+            isClosable: true,
+            duration: 1000
+        })
+      }
+
     return (
-        <div className="TaskForm card-header">
-            <form onSubmit={(event) => {
-                event.preventDefault();
-                add(value);
-                setValue("");
-                toast({
-                    title: `Added task`,
-                    status: "success",
-                    isClosable: true,
-                })
-            }}
-            >
-
-            <InputGroup>
-                <InputLeftElement
-                pointerEvents="none"
-                children={<SmallAddIcon color="gray.300" />}
-                />
-                <Input variant="filled" type="TEXT" value={value} placeholder="Task Description" onChange={e => setValue(e.target.value)}/>
-                <InputRightElement width="9rem">
-                      <Button h="1.75rem" size="sm" onClick={clear}>
-                        Clear
-                      </Button>
-                      <Button colorScheme="blue" h="1.75rem" size="sm" type="submit" ml={2}>
-                        Add
-                      </Button>
-                </InputRightElement>
-            </InputGroup>
-
-    </form>
-
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <FormControl id="name" isInvalid={errors.name}>
+                <InputGroup>
+                    <InputLeftElement
+                    pointerEvents="none"
+                    children={<SmallAddIcon color="gray.300" />}
+                    />
+                    <Input variant="filled" type="TEXT"  placeholder="Task Description"           
+                    {...register("name", {
+                        required: "This is required",
+                    })}/>
+                    <InputRightElement width="9rem">
+                        <Button h="1.75rem" size="sm" onClick={clear}>
+                            Clear
+                        </Button>
+                        <Button colorScheme="blue" h="1.75rem" size="sm" type="submit" ml={2} isLoading={isSubmitting}>
+                            Add
+                        </Button>
+                    </InputRightElement>
+                </InputGroup>
+                <FormErrorMessage>
+                    {errors.name && errors.name.message}
+                </FormErrorMessage>
+            </FormControl>
+        </form>
     );
 }
 
