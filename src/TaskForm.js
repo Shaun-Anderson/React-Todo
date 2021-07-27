@@ -31,9 +31,12 @@ function TaskForm ({description, add }) {
                 children={<SmallAddIcon color="gray.300" />}
                 />
                 <Input variant="filled" type="TEXT" value={value} placeholder="Task Description" onChange={e => setValue(e.target.value)}/>
-                <InputRightElement width="4.5rem">
+                <InputRightElement width="9rem">
                       <Button h="1.75rem" size="sm" onClick={clear}>
                         Clear
+                      </Button>
+                      <Button colorScheme="blue" h="1.75rem" size="sm" type="submit" ml={2}>
+                        Add
                       </Button>
                 </InputRightElement>
             </InputGroup>
