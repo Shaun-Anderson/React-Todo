@@ -4,19 +4,17 @@ import { PhoneIcon, SmallAddIcon, WarningIcon, DeleteIcon } from '@chakra-ui/ico
 import { Grid, GridItem } from "@chakra-ui/react"
 import { Flex, Spacer } from "@chakra-ui/react"
 
-function Task ({id, description, completed, updateTask, completeTask, deleteTask }) {
+function Task ({id, description, complete, updateTask, completeTask, deleteTask }) {
     const [isOpen, setIsOpen] = useState(true);
-    const update = () => updateTask(id, description);
-    const complete = () => completeTask(id);
+    const handleCompleteChange = () => completeTask(id);
 
-        let label;
-        if (!completed) {
-                       label = <p>{description}</p>
-
+    const TextDecoration = () => {
+        if (!complete) {
+            return <Text>{description}</Text>
         } else {
-                      label = <del className="text-muted">{description}</del>
-
+            return <del>{description}</del>
         }
+    }
 
     const onTransitionEnd = () => {
         if(!isOpen)
@@ -25,10 +23,9 @@ function Task ({id, description, completed, updateTask, completeTask, deleteTask
 
     return (
         <ScaleFade initialScale={0.9} in={isOpen} onAnimationComplete={onTransitionEnd}>
-            <Flex className="task" p={3} borderRadius="lg">
-                <Checkbox size="md" checked={completed} onChange={complete} >{label}</Checkbox>
-                <Spacer />
-                <IconButton size="sm" aria-label="Delete Task" icon={<DeleteIcon />} onClick={() => setIsOpen(false)} />
+            <Flex className="task" borderRadius="lg" alignItems="center">
+                <Checkbox colorScheme="green"  size="md" p={3} isChecked={complete} onChange={handleCompleteChange} flexGrow={1} ><TextDecoration /></Checkbox>
+                <IconButton size="sm" mr={3} aria-label="Delete Task" icon={<DeleteIcon />} onClick={() => setIsOpen(false)} />
             </Flex>
         </ScaleFade>);
 }
