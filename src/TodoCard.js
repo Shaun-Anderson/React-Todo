@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Task from './Task'
 import TaskForm from './TaskForm'
+import { useColorMode, useColorModeValue } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
+import { Checkbox, CheckboxGroup, FormControl, FormLabel, Switch, Heading, Flex, Spacer, Text } from "@chakra-ui/react"
+import { SunIcon, MoonIcon } from "@chakra-ui/icons"
 
 function TodoCard ({initalTasks}) {
     const storageState = JSON.parse(window.localStorage.getItem("tasks"));
     const [tasks, setTasks] = useState(storageState || [])
-    const [style, setStyle] = useState("light")
+    //const [style, setStyle] = useState("light")
+    const { toggleColorMode, colorMode } = useColorMode()
 
     useEffect(() => {
         window.localStorage.setItem('tasks', JSON.stringify(tasks))
@@ -44,36 +49,40 @@ function TodoCard ({initalTasks}) {
     }
 
     const ToggleStyle = (val) => {
-        const styleLink = document.getElementById('themeStyle');
-        console.log(style)
-        if (style === 'dark') {
-            console.log('true')
-            styleLink.href = '/theme.min.css';
-            setStyle('light')
-        } else {
-                        console.log('false')
-            styleLink.href = '/theme-dark.min.css';
-            setStyle('dark')
-        }
+        toggleColorMode()
     }
 
-    return (
-        <div className="TodoCard card">
-               <TaskForm add={CreateTask}/>
-               <div className={"card-body"}>
-                { tasks.map(task => ( 
-                    <Task key={task.id} updateTask={UpdateTask} completeTask={CompleteTask} deleteTask={DeleteTask} {...task}/>
-                ))}
-                </div>
-                <div className="card-footer">
-                <div className="custom-control custom-switch">
-                    <input type="checkbox" className="custom-control-input" id="customSwitch1" onChange={(event) => ToggleStyle(event)}/>
-                    <label className="custom-control-label" htmlFor="customSwitch1"></label>
-                      <label className="custom-control-label" htmlFor="customSwitch1"><span className="fe fe-sun"></span></label>
+    const bg = useColorModeValue("gray.50", "gray.700")
 
-                </div>
-                </div>
-        </div>
+    return (
+        <Box w="100%" p={4} backgroundColor={bg} borderRadius="lg" overflow="hidden" mt={5}>
+            <Flex alignItems={"center"} py={3}>
+                <Box >
+                    <Heading>Tasks</Heading>
+                </Box>
+                <Spacer />
+                <Box>
+                    <FormControl display="flex" alignItems="center">
+                        <FormLabel htmlFor="email-alerts" mb="0" mr={2}>
+                            <SunIcon/>
+                        </FormLabel>
+                            <Switch id="email-alerts" checked={colorMode === "light" ? false : true } onChange={ToggleStyle}/>
+                        <FormLabel htmlFor="email-alerts" mb="0" mr={0} ml={2}>
+                            <MoonIcon/>
+                        </FormLabel>
+                    </FormControl>
+                </Box>
+            </Flex>
+            <TaskForm add={CreateTask}/>
+            <Box>
+            { tasks.map(task => ( 
+                <Task key={task.id} updateTask={UpdateTask} completeTask={CompleteTask} deleteTask={DeleteTask} {...task}/>
+            ))}
+            </Box>
+            <Box>
+                <Text fontSize="xs" color="gray.500">(xs) In love with React & Next</Text>
+            </Box>
+        </Box>
     );
 }
 

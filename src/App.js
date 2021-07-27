@@ -1,37 +1,24 @@
 import React from 'react';
 import logo from './logo.svg';
 import TodoCard from './TodoCard'
+import { ChakraProvider, Flex } from "@chakra-ui/react"
 
 
 const tasks = [];
 
 function App() {
   return (
-    <div className="App container-fluid">
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-10 col-lg-8 col-xl-6">
-
-          <div className="header">
-            <div className="container-fluid">
-              <div className="header-body">
-                <div className="row align-items-end">
-                  <div className="col">
-
-                    <h1 className="header-title text-center">
-                      React Todo List
-                    </h1>
-
-                  </div>
-                  <div className="col-auto"></div>
-                </div> 
-              </div>
-
-            </div>
-          </div>
+    <ChakraProvider>
+          <Flex
+      direction="column"
+      align="center"
+      maxW={{ xl: "1200px" }}
+      m="0 auto"
+      p={5}
+    >
       <TodoCard initalTasks={tasks}/>
-        </div>
-      </div>
-    </div>
+      </Flex>
+     </ChakraProvider>
   );
 }
 

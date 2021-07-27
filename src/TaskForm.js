@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { Input, InputGroup, InputLeftElement, InputRightElement, Button, Box } from "@chakra-ui/react"
+import { PhoneIcon, SmallAddIcon, WarningIcon } from '@chakra-ui/icons'
+import { useToast } from "@chakra-ui/react"
 
 function TaskForm ({description, add }) {
     const [value, setValue] = useState("");
+    const toast = useToast()
 
     const clear = () => {
         setValue('')
@@ -13,19 +17,26 @@ function TaskForm ({description, add }) {
                 event.preventDefault();
                 add(value);
                 setValue("");
+                toast({
+                    title: `Added task`,
+                    status: "success",
+                    isClosable: true,
+                })
             }}
             >
-                <div className={"input-group input-group-flush"}>
-                    <div className={"input-group-prepend"}>
-                        <span className="input-group-text">
-                            <i className="fe fe-search"></i>
-                        </span>
-                    </div>
-                    <input className={"form-control"} placeholder={"Task Description"} type={"text"} onChange={e => setValue(e.target.value) } value={value}/>
-                    <div className={"input-group-prepend"}>
-                        <button className={"btn btn-white input-group-text fe fe-x"} type={"button"} onClick={clear}></button>
-                    </div>
-                </div>
+
+            <InputGroup>
+                <InputLeftElement
+                pointerEvents="none"
+                children={<SmallAddIcon color="gray.300" />}
+                />
+                <Input variant="filled" type="TEXT" value={value} placeholder="Task Description" onChange={e => setValue(e.target.value)}/>
+                <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={clear}>
+                        Clear
+                      </Button>
+                </InputRightElement>
+            </InputGroup>
 
     </form>
 

@@ -1,48 +1,36 @@
-import React, { Component } from 'react';
-
+import React, { Component, useState } from 'react';
+import { Box, Checkbox, InputLeftElement, InputRightElement, Button, Text, IconButton, ScaleFade } from "@chakra-ui/react"
+import { PhoneIcon, SmallAddIcon, WarningIcon, DeleteIcon } from '@chakra-ui/icons'
+import { Grid, GridItem } from "@chakra-ui/react"
+import { Flex, Spacer } from "@chakra-ui/react"
 
 function Task ({id, description, completed, updateTask, completeTask, deleteTask }) {
+    const [isOpen, setIsOpen] = useState(true);
     const update = () => updateTask(id, description);
     const complete = () => completeTask(id);
-    const deleteThis = () => deleteTask(id);
 
         let label;
         if (!completed) {
-                       label = <strong>{description}</strong>
+                       label = <p>{description}</p>
 
         } else {
                       label = <del className="text-muted">{description}</del>
 
         }
 
+    const onTransitionEnd = () => {
+        if(!isOpen)
+            deleteTask(id)
+    }
+
     return (
-        <div className="Task py-1">
-            <div className="row">
-                <div className="col-1">
-                      <div className="custom-control custom-checkbox checklist-control">
-    <input className="custom-control-input" id={"checklist"+ id} type="checkbox" checked={completed} onChange={complete}/>
-    <label className="custom-control-label" htmlFor={"checklist"+ id}></label>
-    <span className="custom-control-caption">
-      
-    </span>
-  </div>
-
-
-                </div>
-                <div className="col-10">
-
-                    {label}
-
-                </div>
-                <div className="col-1">
-                                <button className="btn btn-sm text-muted" onClick={deleteThis}><span className="fe fe-x"></span></button>
-
-                </div>
-
-
-            </div>
-        </div>
-    );
+        <ScaleFade initialScale={0.9} in={isOpen} onAnimationComplete={onTransitionEnd}>
+            <Flex className="task" p={3} borderRadius="lg">
+                <Checkbox size="md" checked={completed} onChange={complete} >{label}</Checkbox>
+                <Spacer />
+                <IconButton size="sm" aria-label="Delete Task" icon={<DeleteIcon />} onClick={() => setIsOpen(false)} />
+            </Flex>
+        </ScaleFade>);
 }
 
 export default Task;
