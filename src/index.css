@@ -12,17 +12,4 @@ code {
     monospace;
 }
 
-/* .task:hover {background: rgba(0, 0, 0, 0.068)}
-.task button:hover {background: white} */
-
-
-.task {
-  pointer-events: none;
-}
-.task:hover {
-  background: salmon;
-}
-.task > button {
-  pointer-events: auto;
-  display: inline-block;
-}
+.task:hover {background: rgba(0, 0, 0, 0.068)}
