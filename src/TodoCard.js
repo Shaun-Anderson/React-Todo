@@ -37,7 +37,7 @@ function TodoCard ({initalTasks}) {
             if (item.id == id)
                 return {
                     ...item,
-                    completed: !item.completed
+                    complete: !item.complete
                 }
             return item
         })
@@ -56,7 +56,7 @@ function TodoCard ({initalTasks}) {
 
     return (
         <Box w="100%" p={4} backgroundColor={bg} borderRadius="lg" overflow="hidden" mt={5}>
-            <Flex alignItems={"center"} py={3}>
+            <Flex alignItems={"center"} pb={3}>
                 <Box >
                     <Heading>Tasks</Heading>
                 </Box>
